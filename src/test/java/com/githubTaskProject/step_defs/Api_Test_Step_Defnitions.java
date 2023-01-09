@@ -2,12 +2,14 @@ package com.githubTaskProject.step_defs;
 
 import com.githubTaskProject.utils.Environment;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.Assert;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -168,6 +170,45 @@ public class Api_Test_Step_Defnitions {
     }
 
 
+
+
+
+    //Scenario 3 : Delete
+    @Given("Send a Delete HTTP request for deleting a repository in the given GitHub Organization")
+    public void send_a_delete_http_request_for_deleting_a_repository_in_the_given_git_hub_organization() {
+        deleteResponse =
+                given().accept(ContentType.JSON)
+                        .header("Authorization", token)
+                        .pathParam("OWNER",owner)           //owner as path parameter
+                        .pathParam("REPO",nameOfNewRepo)       //new repo name created previously as path parameter
+                        .log().all()
+                        .when()
+                        .delete("repos/{OWNER}/{REPO}") //end point with the delete http request method
+                        .then()
+                        .log().all()
+                        .extract().response();
+
+
+    }
+    @Then("Verify the status code {int}")
+    public void verify_the_status_code(Integer expectedStatusCode) {
+        int actualStatusCode = deleteResponse.statusCode();
+
+        //validating the status code is 204
+        assertThat(actualStatusCode,is(expectedStatusCode));
+
+    }
+
+    @Then("Verify the headers for deleting")
+    public void verify_the_headers_for_deleting() {
+
+        //delete method has not a response body, so theere is no a content type header, this code fragment is for verifying this
+        Assert.assertFalse(deleteResponse.headers().hasHeaderWithName("Content-Type"));
+
+        //Verify a random header
+        assertThat(deleteResponse.getHeader("Server"),is("GitHub.com"));
+
+    }
 
 
 
