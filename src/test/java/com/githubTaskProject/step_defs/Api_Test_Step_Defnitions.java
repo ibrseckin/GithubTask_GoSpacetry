@@ -116,4 +116,60 @@ public class Api_Test_Step_Defnitions {
 
 
 
+//Scenario 2 : Get
+
+    @When("Send a Get HTTP request for getting the list of the repositories in the given GitHub Organization")
+    public void send_a_get_http_request_for_getting_the_list_of_the_repositories_in_the_given_git_hub_organization() {
+        getResponse =
+                given().accept(ContentType.JSON)
+                        .contentType(ContentType.JSON)
+//                .baseUri("https://api.github.com/")
+                        .header("Authorization", token)
+                        .pathParam("org", organization)
+                        .log().all()
+                        .when()
+                        .get("orgs/{org}/repos")       //end point and get method
+                        .then()
+//                        .statusCode(200)
+                        .log().all()
+                        .extract().response();
+
+    }
+
+    @Then("Verify the status code is {int}")
+    public void verify_the_status_code_is(Integer expectedStatusCode) {
+        int actualStatucCode = getResponse.getStatusCode();
+
+        //check if the status code is 200
+        assertThat(actualStatucCode, equalTo(expectedStatusCode));
+
+    }
+
+    @Then("Verify the response body")
+    public void verify_the_response_body() {
+
+        //check is the new repo in the list of repository
+        assertThat(getResponse.path("name"), hasItem(nameOfNewRepo));
+
+
+
+    }
+
+    @Then("Verifty the headers")
+    public void verifty_the_headers() {
+
+        //verify if the code is in the json format
+        assertThat(getResponse.getHeader("Content-Type"), is("application/json; charset=utf-8"));
+
+        //verify any random header from response
+        assertThat(getResponse.getHeader("Server"), is("GitHub.com"));
+
+
+    }
+
+
+
+
+
+
 }
