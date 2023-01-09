@@ -36,10 +36,7 @@ public class Api_Test_Step_Defnitions {
 
 
     //api base url is for every snippet in this class
-    @Before
-    public void setupBaseURL() {
-        RestAssured.baseURI = Environment.API_BASE_URL;
-    }
+
 
 
     //Scenario 1 : Create

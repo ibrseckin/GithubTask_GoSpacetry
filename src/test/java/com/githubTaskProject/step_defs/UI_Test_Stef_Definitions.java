@@ -6,13 +6,19 @@ import com.githubTaskProject.pages.LoginPage;
 import com.githubTaskProject.utils.BrowserUtilities;
 import com.githubTaskProject.utils.Driver;
 import com.githubTaskProject.utils.Environment;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.http.ContentType;
 import org.junit.Assert;
+import org.junit.Test;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+
+import static io.restassured.RestAssured.given;
 
 public class UI_Test_Stef_Definitions {
     LoginPage loginPage = new LoginPage();
@@ -96,6 +102,7 @@ public class UI_Test_Stef_Definitions {
 
         //user waits for be able to click the create button, used utilizied Explicit wait
         BrowserUtilities.waitForClickablility(githubRepoPage.button_createRepo, 5).click();
+        System.out.println("New Repo is created");
 
     }
 
@@ -144,10 +151,33 @@ public class UI_Test_Stef_Definitions {
 
         //verifying isCreated true, i mean it's checking after whole these step could we create a new repository and is it in the list of the repository.
         Assert.assertTrue(isCreated);
+        System.out.println("Validated that New repo is created");
 
     }
 
 
+    //When the test is executed once, repo is created, for re-execution newly created repository should be deleted
+    @After(value = "@ui")
+    public void deleteNewlyCreatedRepo(){
+
+        GithubRepoPage githubRepoPage = new GithubRepoPage();
+        Actions actions = new Actions(Driver.getDriver());
+        //click on the repoName
+        githubRepoPage.listOfRepositories.get(0).click();
+
+        //click on the settings
+        githubRepoPage.settingsButton.click();
+
+        //click on delete repository
+        actions.moveToElement(githubRepoPage.deleteRepositoryButton).click().perform();
+
+        //enter the needed confirmation text and press enter
+        githubRepoPage.checkBoxForDeletion.sendKeys(Environment.USERNAME+"/NewRepoTask"+ Keys.ENTER);
+
+        //newly created repo is deleted and account and repositories is ready same test.
+        System.out.println("Deleted Newly created Repo");
+
+    }
 }
 
 

@@ -42,6 +42,18 @@ public class GithubRepoPage {
     public WebElement button_createRepo;
 
 
+    @FindBy(id = "settings-tab")
+    public WebElement settingsButton;
+
+
+    @FindBy(xpath = "//details[@class='details-reset details-overlay details-overlay-dark flex-md-order-1 flex-order-2']/summary")
+    public WebElement deleteRepositoryButton;
+
+
+    @FindBy(xpath = "//form[@action='/johnDoeTask/NewRepoTask/settings/delete']/p/input")
+    public WebElement checkBoxForDeletion;
+
+
 
 
 }
