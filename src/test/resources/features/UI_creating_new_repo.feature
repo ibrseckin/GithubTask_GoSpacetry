@@ -1,6 +1,6 @@
 Feature: UI testing on gitHub
   @wip  @ui
-  Scenario:
+  Scenario: Create a new repository and validate if it's created
     Given User navigates to login page of the GitHub application
     And User enters the credentials and clicks on SignIn Button
     When User opens the repository page with using repository link under profile avatar

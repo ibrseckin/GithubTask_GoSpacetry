@@ -1,4 +1,4 @@
-@wip
+@wip @api
 Feature: End to end API Testing, Create, Get and Delete a repository from a organization in github application
 
 
