@@ -160,8 +160,7 @@ public class UI_Test_Stef_Definitions {
     @After(value = "@ui")
     public void deleteNewlyCreatedRepo(){
 
-        GithubRepoPage githubRepoPage = new GithubRepoPage();
-        Actions actions = new Actions(Driver.getDriver());
+
         //click on the repoName
         githubRepoPage.listOfRepositories.get(0).click();
 
