@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
 
-
-        features = "target/rerun.txt"
+glue = "com/githubTaskProject/step_defs",
+        features = "@target/rerun.txt"
 
 )
 public class FailedTestRunner {
